@@ -1,0 +1,74 @@
+{
+  "version": "1.0.0",
+  "policy": {
+    "name": "Comet-T Agent Security Policy",
+    "description": "Strict security controls ensuring human operator sovereignty over agent task execution",
+    "ssot": "Human Operator"
+  },
+  "approval": {
+    "requireApprovalForAll": true,
+    "approvalTimeoutMs": 300000,
+    "maxPendingTasks": 10
+  },
+  "blockedCommands": {
+    "system": [
+      "shutdown", "reboot", "halt", "poweroff",
+      "format", "fdisk", "mkfs", "diskpart"
+    ],
+    "process": [
+      "kill", "killall", "pkill", "taskkill"
+    ],
+    "files": [
+      "rm", "del", "rmdir", "dd", "shred", "wipe"
+    ],
+    "permissions": [
+      "chmod", "chown", "chgrp", "icacls", "takeown"
+    ],
+    "users": [
+      "useradd", "userdel", "usermod", "passwd",
+      "net user", "net localgroup"
+    ],
+    "registry": [
+      "reg", "regedit", "sfc", "dism", "bcdedit"
+    ],
+    "network": [
+      "netsh", "iptables", "ufw", "firewall-cmd",
+      "route", "ifconfig"
+    ],
+    "packageManagers": [
+      "apt", "apt-get", "yum", "dnf", "pacman",
+      "brew", "choco", "winget", "scoop"
+    ],
+    "codeExecution": [
+      "eval", "exec", "source",
+      "bash -c", "sh -c", "powershell -c", "cmd /c",
+      "wscript", "cscript"
+    ]
+  },
+  "approvalRequired": {
+    "versionControl": ["git push", "git commit"],
+    "publishing": ["npm publish", "yarn publish"],
+    "containers": ["docker", "kubectl"],
+    "network": ["ssh", "scp", "rsync", "curl", "wget"],
+    "fileOperations": ["move", "mv", "copy", "cp"]
+  },
+  "dangerousPatterns": [
+    "rm -rf",
+    "rm --force",
+    "del /s /f /q",
+    "curl | bash",
+    "wget | sh",
+    "sudo",
+    "runas",
+    "--no-preserve-root",
+    "base64 -d",
+    "Start-Process -Verb RunAs"
+  ],
+  "auditLog": {
+    "enabled": true,
+    "logAllCommands": true,
+    "logApprovals": true,
+    "logRejections": true,
+    "retentionDays": 90
+  }
+}
